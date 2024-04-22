@@ -21,22 +21,14 @@ import tensorflow as tf
 config = tf.compat.v1.ConfigProto(inter_op_parallelism_threads=1)
 from tensorflow.keras.optimizers import Adam,SGD
 from tensorflow.keras.layers import Input, Dense, Activation,  Flatten, Conv2D
-from tensorflow.keras.layers import MaxPooling2D, Dropout
-from tensorflow.keras.models import Model, Sequential, save_model, load_model, clone_model
-import tensorflow.keras.backend as K
-from tensorflow.keras.utils import plot_model, to_categorical
-from tensorflow._api.v2.math import reduce_sum, square
-
-K.set_image_data_format('channels_last')
-
-# disable GPUs for test reproducibility
-tf.config.set_visible_devices([], 'GPU')
-
-KERNELS = 256
-MLP_UNITS = 32
-
-MIN_EPOCHS = 1
-MAX_EPOCHS = 5
+    model = Sequential(name=model_name)
+    model.add(Conv2D(kernels, (kernel_rows, kernel_col), strides=(1, 1), input_shape=input_shape, kernel_regularizer=regularization, name='conv0'))
+    model.add(Activation('relu'))
+    model.add(Dropout(dropout))
+    model.add(MaxPooling2D(pool_size=(2, 2), name='mp0'))
+    model.add(Flatten())
+    model.add(Dense(classes, activation='softmax', name='fc1'))  # Change to softmax for multi-class classification
+    return model
 MIN_STEPS = 10
 MAX_STEPS = 1000
 
